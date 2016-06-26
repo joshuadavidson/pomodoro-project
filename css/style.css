@@ -45,10 +45,6 @@ td {
   width: 50%;
   text-align: center;
 }
-i {
-  height: 30px;
-  vertical-align: middle;
-}
 i:hover {
   color: rgb(242, 242, 242);
   cursor: pointer;
@@ -88,13 +84,15 @@ a:hover {
 
 /* IDs */
 
-#settings-block {}
 #countdown {
   font-size: 75px;
 }
-#button-block {}
 #current-interval {
   font-size: 25px;
+}
+#sound-icon {
+  font-size: 30px !important;
+  vertical-align: 15px;
 }
 
 /* Created classes*/
@@ -119,4 +117,25 @@ a:hover {
 }
 .time-input {
   font-size: 40px;
+}
+.adjust-button {
+  font-size: 25px;
+  vertical-align: 3px;
+}
+.adjust-button:hover {
+  color: rgb(242, 242, 242);
+  cursor: pointer;
+}
+.mute-button {
+  height: 30px;
+  padding: 4px;
+  width: 30px;
+  background: rgb(150, 150, 150);
+  border-radius: 50%;
+  font-size: 25px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+}
+.mute-button:hover {
+  background: rgb(133, 133, 133);
+  cursor: pointer;
 }

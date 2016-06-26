@@ -1,11 +1,15 @@
 var countdown = null; //start with a null coutdown (for use in modifyTimeLimit function)
 var inSession = true; //start clock state with a session
+//setup beep Sound using Howlwer.js
+var beep = new Howl({
+  urls: ['./audio/beep.mp3']
+});
 
 //Start the countdown
 function startCountdown() {
-  countdown = setInterval(() => {//set coutdown to an interval of 1000ms
-    var minutes = parseInt($('#countdown-minutes').html());//get minutes from the page
-    var seconds = parseInt($('#countdown-seconds').html());//get seconds from the page
+  countdown = setInterval(() => { //set coutdown to an interval of 1000ms
+    var minutes = parseInt($('#countdown-minutes').html()); //get minutes from the page
+    var seconds = parseInt($('#countdown-seconds').html()); //get seconds from the page
     var totalSeconds = minutes * 60 + seconds; //add up the total seconds to countdown
 
     --totalSeconds; //decrement the time by one second on each call
@@ -13,12 +17,14 @@ function startCountdown() {
     $('#countdown-minutes').html(Math.floor(totalSeconds / 60)); //update minutes
 
     //toggle between breaks and sessions
-    if (inSession && totalSeconds === -1) {//if done with session start break
+    if (inSession && totalSeconds === -1) { //if done with session start break
+      beep.play(); //play sound signifying end of session
       inSession = false; //set the clock state
       $('#state').html('Break'); //set state to Break on page
       $('#countdown-minutes').html($('#break-time').html()); //set the minutes to user selected break time
       $('#countdown-seconds').html('00'); //reset the seconds
-    } else if (!inSession && totalSeconds === -1) {//if done with break start session
+    } else if (!inSession && totalSeconds === -1) { //if done with break start session
+      beep.play(); //play sound signifying end of session
       inSession = true; //set the clock state
       $('#state').html('Session'); //Set state to Session on page
       $('#countdown-minutes').html($('#session-time').html()); //set the minutes to user selected session time
@@ -30,7 +36,7 @@ function startCountdown() {
 //Stop the coutdown
 function stopCountdown() {
   clearInterval(countdown); //stop the coutdown interval
-  countdown = null;//clear the countdown (for use in modifyTimeLimit function)
+  countdown = null; //clear the countdown (for use in modifyTimeLimit function)
 }
 
 //Reset the coutdown to a new session
@@ -50,11 +56,11 @@ function modifyTimeLimit(time, operation) {
   var currentState = $('#state').html().toLowerCase(); //Get the current clock state from page
 
   if ((currDuration > 0 && interval === -1) | (currDuration < 600 && interval === 1)) { //limit times to the range 0-600
-    timeTag.html(currDuration + interval);//adjust the session/break time
+    timeTag.html(currDuration + interval); //adjust the session/break time
 
     //Adjust timer if stopped and reset
     if (!countdown && currentState === time && countdownMinutes === currDuration) {
-      $('#countdown-minutes').html(countdownMinutes + interval);//adjust coutdown minutes on page
+      $('#countdown-minutes').html(countdownMinutes + interval); //adjust coutdown minutes on page
     }
   }
 }
@@ -62,10 +68,24 @@ function modifyTimeLimit(time, operation) {
 $(document).ready(() => {
 
   //Handle the clicks to adjust time limits (pluses and minuses)
-  $('i').click(function(e) {
+  $('i.adjust-button').click(function(e) {
     var time = $(this).attr('id').match(/^[a-z]*?(?=-)/)[0]; //grab the time from the ID
     var operation = $(this).attr('id').match(/[a-z]*?$/)[0]; //grab the direction from the ID
     modifyTimeLimit(time, operation); //pass time and operation to modifyTimeLimits
+  });
+
+  //Handle the clicks to mute and unmute 
+  $('i.mute-button').click(e => {
+    var button = $('i.mute-button'); //select the mute button from page
+    if (button.hasClass('fa-bell-o')) { //if currently unmuted, mute
+      button.removeClass('fa-bell-o');
+      button.addClass('fa-bell-slash-o');
+      Howler.mute();
+    } else { //if currently muted, unmute
+      button.removeClass('fa-bell-slash-o');
+      button.addClass('fa-bell-o');
+      Howler.unmute();
+    }
   });
 
   //Handle start-stop button clicks
