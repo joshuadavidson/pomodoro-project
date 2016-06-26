@@ -1,0 +1,122 @@
+body {
+  font-family: sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  color: rgb(255, 255, 255);
+  background: url(../img/tomato.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  cursor: default;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+main {
+  width: 320px;
+  height: 480px;
+  margin: 15% auto auto auto;
+  background: rgba(135, 127, 130, 0.75);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4), 0 3px 10px 0 rgba(0, 0, 0, 0.4);
+}
+@media (max-width: 320px) {
+  main {
+    margin: 0 auto auto auto;
+  }
+}
+header {
+  font-size: 35px;
+  padding: 20px 0 30px 0;
+}
+section {
+  padding: 15px 30px 15px 30px;
+}
+footer {
+  font-size: 12px;
+}
+table {
+  width: 100%;
+}
+td {
+  width: 50%;
+  text-align: center;
+}
+i {
+  height: 30px;
+  vertical-align: middle;
+}
+i:hover {
+  color: rgb(242, 242, 242);
+  cursor: pointer;
+}
+i:active {
+  transform: translateY(2px);
+}
+button {
+  font-size: 20px;
+  text-shadow: inherit;
+  color: inherit;
+  width: 100px;
+  height: 30px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+}
+button:hover {
+  cursor: pointer;
+}
+button:active {
+  transform: translateY(2px);
+}
+*:focus {
+  outline: none;
+}
+a:link, a:visited {
+  border: none;
+  text-decoration: underline;
+  font-style: normal;
+  color: inherit;
+}
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* IDs */
+
+#settings-block {}
+#timer {
+  font-size: 75px;
+}
+#button-block {}
+#current-interval {
+  font-size: 25px;
+}
+
+/* Created classes*/
+
+.start-btn {
+  background: rgb(113, 160, 63);
+}
+.start-btn:hover {
+  background: rgb(100, 147, 50);
+}
+.stop-btn {
+  background: rgb(120, 0, 0);
+}
+.stop-btn:hover {
+  background: rgb(103, 0, 0);
+}
+.reset-btn {
+  background: rgb(150, 150, 150);
+}
+.reset-btn:hover {
+  background: rgb(133, 133, 133);
+}
+.time-input {
+  font-size: 40px;
+}

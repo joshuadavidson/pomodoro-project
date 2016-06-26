@@ -1,0 +1,78 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Pomodoro Clock</title>
+
+  <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+
+  <!-- OG properties -->
+  <meta property="fb:app_id" content="" />
+  <meta property="og:url" content="https://jwaynedavidson.com/projects/pomodoro/clock.html" />
+  <meta property="og:title" content="Pomodoro Clock" />
+  <meta property="og:image" content="https://jwaynedavidson.com/img/pomodoro-thumbnail.jpg" />
+
+  <!-- Links -->
+  <link rel="shortcut icon" href="../../favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="../../scripts/gatracking.js"></script>
+</head>
+
+<body>
+
+  <main>
+    <header>
+      Pomodoro Clock
+    </header>
+
+    <section id="settings-block">
+      <table>
+        <tr>
+          <td>
+            Session
+          </td>
+          <td>
+            Break
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <i class="fa fa-minus" aria-hidden="true" id="session-subract"></i>
+            <span class="time-input" id="session-time">25</span>
+            <i class="fa fa-plus" aria-hidden="true" id="session-add"></i>
+          </td>
+          <td>
+            <i class="fa fa-minus" aria-hidden="true" id="break-subtract"></i>
+            <span class="time-input" id="break-time">5</span>
+            <i class="fa fa-plus" aria-hidden="true" id="break-add"></i>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <section id="timer-block">
+      <span id="current-interval">Sesssion</span>
+      <div id="timer">
+        <span id="timer-minutes">25</span>:<span id="timer-seconds">00</span>
+      </div>
+    </section>
+
+    <section id="button-block">
+        <button type="button" name="start-stop-btn" class="start-btn" id="start-stop">Start</button>
+        <button type="button" name="reset-btn" class="reset-btn" id="reset">Reset</button>
+    </section>
+
+    <footer class="text-center" id="footer-block">
+      <p>Coded by <a href="https://jwaynedavidson.com">Joshua Davidson</a></p>
+      <p>Photo: Markus Spiske / <a href="http://raumrot.com/" target="_blank">raumrot.com</a> / <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank">CC-BY</a></p>
+    </footer>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  <script src="./scripts/main.js"></script>
+
+</body>
