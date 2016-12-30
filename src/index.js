@@ -3,7 +3,7 @@
 /* global Howl document */
 /* global Howler document */
 
-// start with a null coutdown (for use in modifyTimeLimit function)
+// start with a null intervalID for timer
 let countdown = null;
 
 // start clock state with a session
@@ -16,8 +16,8 @@ const beep = new Howl({
 
 // Start the countdown
 function startCountdown() {
-  // set coutdown to an interval of 1000ms
-  countdown = setInterval(() => {
+  // function that executes every cycle of clock
+  function oneCycle() {
     // get minutes from the page
     const minutes = parseInt($('#countdown-minutes').html(), 10);
 
@@ -71,7 +71,10 @@ function startCountdown() {
       // reset the seconds
       $('#countdown-seconds').html('00');
     }
-  }, 1000);
+  }
+
+  // start timer by setting coutdown to run oneCycle every 1000ms
+  countdown = setInterval(oneCycle, 1000);
 }
 
 // Stop the coutdown
@@ -83,7 +86,7 @@ function stopCountdown() {
   countdown = null;
 }
 
-// Reset the coutdown to a new session
+// Reset the coutdown timer to a new session
 function resetCountdown() {
   // set the clock state back to session
   inSession = true;
@@ -99,7 +102,7 @@ function resetCountdown() {
 }
 
 // function that takes time (session/break) and operation (add/subtract)
-// adjusts the time accordingly
+// adjusts the time in the DOM accordingly
 function modifyTimeLimit(time, operation) {
   // select the appropriate time (session/break)
   const timeTag = $(`#${time}-time`);
@@ -167,7 +170,7 @@ $(document).ready(() => {
     // select button from page
     const button = $('#start-stop');
 
-    // if currently start
+    // Start
     if (button.html() === 'Start') {
       // change to stop
       button.removeClass('start-btn');
@@ -180,7 +183,7 @@ $(document).ready(() => {
       startCountdown();
     }
 
-    // if currently stop
+    // Stop
     else {
       // change to start
       button.removeClass('stop-btn');
