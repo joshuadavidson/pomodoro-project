@@ -1,111 +1,202 @@
-var countdown = null; //start with a null coutdown (for use in modifyTimeLimit function)
-var inSession = true; //start clock state with a session
-//setup beep Sound using Howlwer.js
-var beep = new Howl({
-  urls: ['./audio/beep.mp3']
+/* establish global variables for ESLint */
+/* global $ document */
+/* global Howl document */
+/* global Howler document */
+
+// start with a null coutdown (for use in modifyTimeLimit function)
+let countdown = null;
+
+// start clock state with a session
+let inSession = true;
+
+// setup beep Sound using Howlwer.js
+const beep = new Howl({
+  urls: ['./audio/beep.mp3'],
 });
 
-//Start the countdown
+// Start the countdown
 function startCountdown() {
-  countdown = setInterval(() => { //set coutdown to an interval of 1000ms
-    var minutes = parseInt($('#countdown-minutes').html()); //get minutes from the page
-    var seconds = parseInt($('#countdown-seconds').html()); //get seconds from the page
-    var totalSeconds = minutes * 60 + seconds; //add up the total seconds to countdown
+  // set coutdown to an interval of 1000ms
+  countdown = setInterval(() => {
+    // get minutes from the page
+    const minutes = parseInt($('#countdown-minutes').html(), 10);
 
-    --totalSeconds; //decrement the time by one second on each call
-    $('#countdown-seconds').html(totalSeconds % 60 <= 9 ? '0' + totalSeconds % 60 : totalSeconds % 60); //update seconds, account for 1 digit values
-    $('#countdown-minutes').html(Math.floor(totalSeconds / 60)); //update minutes
+    // get seconds from the page
+    const seconds = parseInt($('#countdown-seconds').html(), 10);
 
-    //toggle between breaks and sessions
-    if (inSession && totalSeconds === -1) { //if done with session start break
-      beep.play(); //play sound signifying end of session
-      inSession = false; //set the clock state
-      $('#state').html('Break'); //set state to Break on page
-      $('#countdown-minutes').html($('#break-time').html()); //set the minutes to user selected break time
-      $('#countdown-seconds').html('00'); //reset the seconds
-    } else if (!inSession && totalSeconds === -1) { //if done with break start session
-      beep.play(); //play sound signifying end of session
-      inSession = true; //set the clock state
-      $('#state').html('Session'); //Set state to Session on page
-      $('#countdown-minutes').html($('#session-time').html()); //set the minutes to user selected session time
-      $('#countdown-seconds').html('00'); //reset the seconds
+    // add up the total seconds to countdown
+    let totalSeconds = (minutes * 60) + seconds;
+
+    // decrement the time by one second on each call
+    totalSeconds -= 1;
+
+    // update seconds, account for 1 digit values
+    $('#countdown-seconds').html(totalSeconds % 60 <= 9 ? `0${totalSeconds % 60}` : totalSeconds % 60);
+
+    // update minutes
+    $('#countdown-minutes').html(Math.floor(totalSeconds / 60));
+
+    // toggle between breaks and sessions
+    // if done with session start break
+    if (inSession && totalSeconds === -1) {
+      // play sound signifying end of session
+      beep.play();
+
+      // set the clock state
+      inSession = false;
+
+      // set state to Break on page
+      $('#state').html('Break');
+
+      // set the minutes to user selected break time
+      $('#countdown-minutes').html($('#break-time').html());
+
+      $('#countdown-seconds').html('00'); // reset the seconds
+    }
+
+    // if done with break start session
+    else if (!inSession && totalSeconds === -1) {
+      // play sound signifying end of session
+      beep.play();
+
+      // set the clock state
+      inSession = true;
+
+      // Set state to Session on page
+      $('#state').html('Session');
+
+      // set the minutes to user selected session time
+      $('#countdown-minutes').html($('#session-time').html());
+
+      // reset the seconds
+      $('#countdown-seconds').html('00');
     }
   }, 1000);
 }
 
-//Stop the coutdown
+// Stop the coutdown
 function stopCountdown() {
-  clearInterval(countdown); //stop the coutdown interval
-  countdown = null; //clear the countdown (for use in modifyTimeLimit function)
+  // stop the coutdown interval
+  clearInterval(countdown);
+
+  // clear the countdown (for use in modifyTimeLimit function)
+  countdown = null;
 }
 
-//Reset the coutdown to a new session
+// Reset the coutdown to a new session
 function resetCountdown() {
-  inSession = true; //set the clock state back to session
-  $('#state').html('Session'); //set the state to Session on the page
-  $('#countdown-minutes').html($('#session-time').html()); //set the minutes to user selected session time
-  $('#countdown-seconds').html('00'); //reset the seconds
+  // set the clock state back to session
+  inSession = true;
+
+  // set the state to Session on the page
+  $('#state').html('Session');
+
+  // set the minutes to user selected session time
+  $('#countdown-minutes').html($('#session-time').html());
+
+  // reset the seconds
+  $('#countdown-seconds').html('00');
 }
 
-//function that takes time (session/break) and operation (add/subtract) and adjusts the time accordingly
+// function that takes time (session/break) and operation (add/subtract)
+// adjusts the time accordingly
 function modifyTimeLimit(time, operation) {
-  var timeTag = $('#' + time + '-time'); //select the appropriate time (session/break)
-  var interval = operation === 'add' ? 1 : -1; //determine the direction to adjust the time (add/subtract)
-  var currDuration = parseInt(timeTag.html()); //get the current user set duration
-  var countdownMinutes = parseInt($('#countdown-minutes').html()); //get the current coundown minutes from page
-  var currentState = $('#state').html().toLowerCase(); //Get the current clock state from page
+  // select the appropriate time (session/break)
+  const timeTag = $(`#${time}-time`);
 
-  if ((currDuration > 0 && interval === -1) | (currDuration < 600 && interval === 1)) { //limit times to the range 0-600
-    timeTag.html(currDuration + interval); //adjust the session/break time
+  // determine the direction to adjust the time (add/subtract)
+  const interval = operation === 'add' ? 1 : -1;
 
-    //Adjust timer if stopped and reset
+  // get the current user set duration
+  const currDuration = parseInt(timeTag.html(), 10);
+
+  // get the current coundown minutes from page
+  const countdownMinutes = parseInt($('#countdown-minutes').html(), 10);
+
+  // Get the current clock state from page
+  const currentState = $('#state').html().toLowerCase();
+
+  // limit times to the range 0-600
+  if ((currDuration > 0 && interval === -1) || (currDuration < 600 && interval === 1)) {
+    // adjust the session/break time
+    timeTag.html(currDuration + interval);
+
+    // Adjust timer if stopped and reset
     if (!countdown && currentState === time && countdownMinutes === currDuration) {
-      $('#countdown-minutes').html(countdownMinutes + interval); //adjust coutdown minutes on page
+      // adjust coutdown minutes on page
+      $('#countdown-minutes').html(countdownMinutes + interval);
     }
   }
 }
 
 $(document).ready(() => {
+  // Handle the clicks to adjust time limits (pluses and minuses)
+  $('i.adjust-button').click(function onClickAdjust() {
+    // grab the time from the ID
+    const time = $(this).attr('id').match(/^[a-z]*?(?=-)/)[0];
 
-  //Handle the clicks to adjust time limits (pluses and minuses)
-  $('i.adjust-button').click(function(e) {
-    var time = $(this).attr('id').match(/^[a-z]*?(?=-)/)[0]; //grab the time from the ID
-    var operation = $(this).attr('id').match(/[a-z]*?$/)[0]; //grab the direction from the ID
-    modifyTimeLimit(time, operation); //pass time and operation to modifyTimeLimits
+    // grab the direction from the ID
+    const operation = $(this).attr('id').match(/[a-z]*?$/)[0];
+
+    // pass time and operation to modifyTimeLimits
+    modifyTimeLimit(time, operation);
   });
 
-  //Handle the clicks to mute and unmute 
-  $('i.mute-button').click(e => {
-    var button = $('i.mute-button'); //select the mute button from page
-    if (button.hasClass('fa-bell-o')) { //if currently unmuted, mute
+  // Handle the clicks to mute and unmute
+  $('i.mute-button').click(() => {
+    // select the mute button from page
+    const button = $('i.mute-button');
+
+    // if currently unmuted, mute
+    if (button.hasClass('fa-bell-o')) {
       button.removeClass('fa-bell-o');
       button.addClass('fa-bell-slash-o');
       Howler.mute();
-    } else { //if currently muted, unmute
+    }
+
+    // if currently muted, unmute
+    else {
       button.removeClass('fa-bell-slash-o');
       button.addClass('fa-bell-o');
       Howler.unmute();
     }
   });
 
-  //Handle start-stop button clicks
-  $('#start-stop').click(e => {
-    var button = $('#start-stop'); //select button from page
-    if (button.html() === 'Start') { //if currently start
+  // Handle start-stop button clicks
+  $('#start-stop').click(() => {
+    // select button from page
+    const button = $('#start-stop');
+
+    // if currently start
+    if (button.html() === 'Start') {
+      // change to stop
       button.removeClass('start-btn');
-      button.addClass('stop-btn'); //change to stop
-      button.html('Stop'); //adjust button text
-      startCountdown(); //start the coutdown
-    } else { //if currently stop
+      button.addClass('stop-btn');
+
+      // adjust button text
+      button.html('Stop');
+
+      // start the coutdown
+      startCountdown();
+    }
+
+    // if currently stop
+    else {
+      // change to start
       button.removeClass('stop-btn');
-      button.addClass('start-btn'); //change to start
-      button.html('Start'); //adjust button text
-      stopCountdown(); //stop the coutdown
+      button.addClass('start-btn');
+
+      // adjust button text
+      button.html('Start');
+
+      // stop the coutdown
+      stopCountdown();
     }
   });
 
-  //Handle reset button clicks
-  $('#reset').click(e => {
-    resetCountdown(); //reset the coutdown
+  // Handle reset button clicks
+  $('#reset').click(() => {
+    // reset the coutdown
+    resetCountdown();
   });
 });
