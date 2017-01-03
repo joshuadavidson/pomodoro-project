@@ -2,7 +2,7 @@
   "name": "pomodoro-project",
   "version": "1.0.0",
   "description": "Web-based pomodoro clock",
-  "main": "index.html",
+  "main": "index.js",
   "scripts": {
     "watch": "webpack --watch --progress --colors",
     "build": "webpack --progress --colors"
