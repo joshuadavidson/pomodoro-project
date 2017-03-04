@@ -1,7 +1,15 @@
 /* establish global variables for ESLint */
-/* global $ document */
-/* global Howl document */
-/* global Howler document */
+/* global document */
+
+// import dependencies
+import $ from 'jquery';
+import { Howl } from 'howler';
+
+// import custom styles for project
+import './index.scss';
+
+// import audio files
+import './audio/beep.mp3';
 
 // start with a null intervalID for timer
 let countdown = null;
@@ -11,7 +19,7 @@ let inSession = true;
 
 // setup beep Sound using Howlwer.js
 const beep = new Howl({
-  urls: ['./audio/beep.mp3'],
+  src: ['./audio/beep.mp3'],
 });
 
 // Start the countdown
@@ -154,14 +162,14 @@ $(document).ready(() => {
     if (button.hasClass('fa-bell-o')) {
       button.removeClass('fa-bell-o');
       button.addClass('fa-bell-slash-o');
-      Howler.mute();
+      beep.mute(true);
     }
 
     // if currently muted, unmute
     else {
       button.removeClass('fa-bell-slash-o');
       button.addClass('fa-bell-o');
-      Howler.unmute();
+      beep.mute(false);
     }
   });
 
